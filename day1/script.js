@@ -33,12 +33,12 @@ function processMultilineStrings(inputString) {
     }
   });
 
+  // sum up the all the numbers array
   let sum = resultsArray.reduce(
     (accumulator, currentValue) => accumulator + currentValue
   );
   return sum;
 }
 
-// Example usage:
-let numbersArray = processMultilineStrings(text);
-console.log("Puzzle output:", numbersArray);
+let answer = processMultilineStrings(text);
+console.log("Puzzle output:", answer);
