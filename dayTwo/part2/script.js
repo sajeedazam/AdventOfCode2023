@@ -2,15 +2,8 @@ function processMultilineStrings(inputString) {
   // Split the string into an array of lines
   let linesArray = inputString.split("\n");
 
-  let possibleGames = [];
+  let powerSet = [];
   let totalSum = 0;
-
-  // Define the limits for red, green, and blue cubes
-  const limits = {
-    red: 12,
-    green: 13,
-    blue: 14,
-  };
 
   // Iterate through each line
   for (let line of linesArray) {
@@ -19,17 +12,13 @@ function processMultilineStrings(inputString) {
     let [gameID, sets] = line.split(":");
     // Splits the sets of cubes at ';' to create an array (setArray) containing each set
     let setArray = sets.trim().split(";");
-
-    let isPossible = true;
-
+    let cubeCount = {
+      red: 0,
+      green: 0,
+      blue: 0,
+    };
     // Check each set of cubes within the game
     for (let set of setArray) {
-      let cubeCount = {
-        red: 0,
-        green: 0,
-        blue: 0,
-      };
-
       // Extract cube counts from each set
       // Splits each set at ',', trims spaces, and then splits by space to extract cube count and color, creating an array of cube information
       // example: a cube in cubes would have value ["1","blue"]
@@ -38,30 +27,27 @@ function processMultilineStrings(inputString) {
       // Count red, green, and blue cubes in the set
       for (let cube of cubes) {
         // count and color extracted from one array of cube
+        let tempCount = {
+          red: 0,
+          green: 0,
+          blue: 0,
+        };
+
         let [count, color] = cube;
-        cubeCount[color] += parseInt(count);
-      }
+        tempCount[color] += parseInt(count);
 
-      // Check if any color count exceeds the limits
-      if (
-        cubeCount.red > limits.red ||
-        cubeCount.green > limits.green ||
-        cubeCount.blue > limits.blue
-      ) {
-        isPossible = false;
-        // No need to check further sets if any set exceeds the limits
-        break;
+        if (tempCount[color] >= cubeCount[color]) {
+          cubeCount[color] = tempCount[color];
+        }
       }
     }
-
-    // If all sets are within limits, mark the game as possible
-    if (isPossible) {
-      possibleGames.push(parseInt(gameID.trim().split(" ")[1]));
-    }
+    powerSet.push(parseInt(cubeCount.red * cubeCount.green * cubeCount.blue));
+    console.log(powerSet);
+    console.log(cubeCount);
   }
 
   // Sum up the IDs of the possible games
-  totalSum = possibleGames.reduce((acc, cur) => acc + cur, 0);
+  totalSum = powerSet.reduce((acc, cur) => acc + cur, 0);
   return totalSum;
 }
 
