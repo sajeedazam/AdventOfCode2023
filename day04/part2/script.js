@@ -7,8 +7,8 @@ function sumCardNumbers(scratchCards) {
     let [cardString, numbers] = card.trim().split(":");
     let cardNumber = parseInt(cardString.match(/\d+/)[0]);
     let [winningNumbList, myNumbList] = numbers.trim().split("|");
-    let winningNumbArr = matchRegex(winningNumbList);
-    let myNumbArr = matchRegex(myNumbList);
+    let winningNumbArr = winningNumbList.match(/\d+/g).map(Number);
+    let myNumbArr = myNumbList.match(/\d+/g).map(Number);
 
     if (!cardObjArr[cardNumber]) {
       cardObjArr[cardNumber] = { instances: 1 };
@@ -46,16 +46,6 @@ function sumCardNumbers(scratchCards) {
   }
 
   return totalCards;
-}
-
-function matchRegex(list) {
-  let i = 0;
-  let resultArr = [];
-  for (let match of list.matchAll(/\d+/g)) {
-    resultArr.push(match);
-    i += 1;
-  }
-  return resultArr.map(Number);
 }
 
 let scratchCards = text;
